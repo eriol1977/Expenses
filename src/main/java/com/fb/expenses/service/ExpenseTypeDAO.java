@@ -6,6 +6,7 @@
 package com.fb.expenses.service;
 
 import com.fb.expenses.entity.ExpenseType;
+import javax.persistence.Query;
 
 /**
  *
@@ -23,4 +24,9 @@ public class ExpenseTypeDAO extends AbstractDAO<ExpenseType> {
         persisted.setDescription(updated.getDescription());
     }
 
+    public ExpenseType findByCode(String code) {
+        Query query = em.createNamedQuery("FIND_EXPENSE_TYPE_BY_CODE");
+        query.setParameter("code", code);
+        return (ExpenseType) query.getSingleResult();
+    }
 }

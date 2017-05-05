@@ -49,7 +49,19 @@ public class TestExpenseType {
         assertEquals("Wrong code", type.getCode(), found.getCode());
         assertEquals("Wrong description", type.getDescription(), found.getDescription());
     }
-
+    
+    @Test
+    public void testFindExpenseTypeByCode() {
+        ExpenseType type = new ExpenseType("AL", "Alimentari");
+        dao.persist(type);
+        ExpenseType type2 = new ExpenseType("TRASP", "Trasporti");
+        dao.persist(type2);
+        ExpenseType found = dao.findByCode("AL");
+        assertEquals("Wrong id", type.getId(), found.getId());
+        assertEquals("Wrong code", type.getCode(), found.getCode());
+        assertEquals("Wrong description", type.getDescription(), found.getDescription());
+    }
+    
     @Test
     public void testUpdateExpenseType() {
         ExpenseType type = new ExpenseType("AL", "Alimentari");

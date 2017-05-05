@@ -22,7 +22,8 @@ import javax.persistence.Table;
 
 @NamedQueries({
     @NamedQuery(query = "Select e from ExpenseType e", name = "FIND_ALL_EXPENSE_TYPES"),
-    @NamedQuery(query = "Delete from ExpenseType", name = "DELETE_ALL_EXPENSE_TYPES")
+    @NamedQuery(query = "Delete from ExpenseType", name = "DELETE_ALL_EXPENSE_TYPES"),
+    @NamedQuery(query = "Select e from ExpenseType e where e.code = :code", name = "FIND_EXPENSE_TYPE_BY_CODE")
 })
 
 public class ExpenseType implements IEntity {

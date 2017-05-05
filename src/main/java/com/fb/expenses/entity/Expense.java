@@ -5,7 +5,10 @@
  */
 package com.fb.expenses.entity;
 
+import com.fb.expenses.service.ExpenseTypeDAO;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,14 +26,15 @@ import javax.persistence.Table;
 @Table
 
 @NamedQueries({
-    @NamedQuery(query = "Select e from Expense e", name = "FIND_ALL_EXPENSES"),
+    @NamedQuery(query = "Select e from Expense e", name = "FIND_ALL_EXPENSES")
+    ,
     @NamedQuery(query = "Delete from Expense", name = "DELETE_ALL_EXPENSES")
 })
 
 public class Expense implements IEntity {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -54,6 +58,13 @@ public class Expense implements IEntity {
         this.notes = notes;
     }
 
+    public Expense(String date, String type, double value, String notes) throws IOException {
+        setDate(date);
+        setType(type);
+        this.value = value;
+        this.notes = notes;
+    }
+
     @Override
     public Long getId() {
         return id;
@@ -71,12 +82,23 @@ public class Expense implements IEntity {
         this.date = date;
     }
 
+    public final void setDate(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.date = LocalDate.parse(date, formatter);
+    }
+
     public ExpenseType getType() {
         return type;
     }
 
     public void setType(ExpenseType type) {
         this.type = type;
+    }
+
+    public final void setType(String type) throws IOException {
+        try (ExpenseTypeDAO typeDao = new ExpenseTypeDAO()) {
+            this.type = typeDao.findByCode(type);
+        }
     }
 
     public double getValue() {

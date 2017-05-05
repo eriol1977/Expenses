@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.fb.expenses.service;
+package com.fb.expenses.config;
 
 import com.fb.expenses.entity.ExpenseType;
+import com.fb.expenses.service.ExpenseTypeDAO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,23 +26,24 @@ public class ExpensesContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
+       
+        // creates the expense types, if they don't already exist
         ExpenseTypeDAO dao = new ExpenseTypeDAO();
-        dao.deleteAll();
-        
-        List<Pair> data = new ArrayList<>();
-        data.add(new Pair("ABB", "Abbigliamento"));
-        data.add(new Pair("ALI", "Alimentari"));
-        data.add(new Pair("DOC", "Documenti"));
-        data.add(new Pair("IGB", "Igiene/Bellezza"));
-        data.add(new Pair("INT", "Intrattenimento"));
-        data.add(new Pair("OGG", "Oggetti"));
-        data.add(new Pair("SAL", "Salute"));
-        data.add(new Pair("TRA", "Trasporti"));
-        
-        List<ExpenseType> types = data.stream().map(d -> new ExpenseType((String) d.x, (String) d.y)).collect(Collectors.toList());
+        List<ExpenseType> types = dao.findAll();
+        if (types.isEmpty()) {
+            List<Pair> data = new ArrayList<>();
+            data.add(new Pair("ABB", "Abbigliamento"));
+            data.add(new Pair("ALI", "Alimentari"));
+            data.add(new Pair("DOC", "Documenti"));
+            data.add(new Pair("IGB", "Igiene/Bellezza"));
+            data.add(new Pair("INT", "Intrattenimento"));
+            data.add(new Pair("OGG", "Oggetti"));
+            data.add(new Pair("SAL", "Salute"));
+            data.add(new Pair("TRA", "Trasporti"));
+            types = data.stream().map(d -> new ExpenseType((String) d.x, (String) d.y)).collect(Collectors.toList());
+            dao.persistAll(types);
+        }
 
-        dao.persistAll(types);
-        
         try {
             dao.close();
         } catch (IOException ex) {
@@ -53,7 +55,7 @@ public class ExpensesContextListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         System.out.println("Shutting down!");
     }
-    
+
     class Pair<X, Y> {
 
         public final X x;
