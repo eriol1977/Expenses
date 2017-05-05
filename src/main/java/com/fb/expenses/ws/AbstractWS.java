@@ -16,10 +16,12 @@ import java.util.logging.Logger;
  *
  * @author f.bertolino
  */
-public class AbstractWS {
+public abstract class AbstractWS {
 
     protected final Gson gson = new Gson();
-
+    
+    protected abstract AbstractDAO getDAO();
+    
     protected void closeDAO(AbstractDAO dao) {
         try {
             dao.close();

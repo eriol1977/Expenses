@@ -16,23 +16,28 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * Usage examples:
- * 
+ *
  * http://localhost:8081/Expenses/types/getall
  * http://localhost:8081/Expenses/types/add?code=TST&description=Teeeeest
  * http://localhost:8081/Expenses/types/update?code=TST&newCode=NEW&description=Ciaaoooo
  * http://localhost:8081/Expenses/types/delete?code=NEW
- * 
+ *
  * @author f.bertolino
  */
 @Path("/types")
 public class ExpenseTypeWS extends AbstractWS {
+
+    @Override
+    protected ExpenseTypeDAO getDAO() {
+        return new ExpenseTypeDAO();
+    }
 
     // URI: <contextPath>/types/getall
     @GET
     @Path("/getall")
     @Produces(MediaType.APPLICATION_JSON)
     public String getall() {
-        ExpenseTypeDAO typeDAO = new ExpenseTypeDAO();
+        ExpenseTypeDAO typeDAO = getDAO();
         List<ExpenseType> types = typeDAO.findAll();
         closeDAO(typeDAO);
         return gson.toJson(types);
@@ -44,7 +49,7 @@ public class ExpenseTypeWS extends AbstractWS {
     @Produces(MediaType.APPLICATION_JSON)
     public String add(@QueryParam("code") String code, @QueryParam("description") String description) {
         ExpenseType type = new ExpenseType(code, description);
-        ExpenseTypeDAO typeDAO = new ExpenseTypeDAO();
+        ExpenseTypeDAO typeDAO = getDAO();
         typeDAO.persist(type);
         closeDAO(typeDAO);
         return gson.toJson(type);
@@ -55,7 +60,7 @@ public class ExpenseTypeWS extends AbstractWS {
     @Path("/update")
     @Produces(MediaType.APPLICATION_JSON)
     public String update(@QueryParam("code") String code, @QueryParam("newCode") String newCode, @QueryParam("description") String description) {
-        ExpenseTypeDAO typeDAO = new ExpenseTypeDAO();
+        ExpenseTypeDAO typeDAO = getDAO();
         ExpenseType type = typeDAO.findByCode(code);
         type.setCode(newCode);
         type.setDescription(description);
@@ -69,7 +74,7 @@ public class ExpenseTypeWS extends AbstractWS {
     @Path("/delete")
     @Produces(MediaType.TEXT_PLAIN)
     public String delete(@QueryParam("code") String code) {
-        ExpenseTypeDAO typeDAO = new ExpenseTypeDAO();
+        ExpenseTypeDAO typeDAO = getDAO();
         ExpenseType type = typeDAO.findByCode(code);
         typeDAO.delete(type);
         closeDAO(typeDAO);

@@ -28,12 +28,17 @@ import javax.ws.rs.core.MediaType;
 @Path("/expenses")
 public class ExpenseWS extends AbstractWS {
 
+    @Override
+    protected ExpenseDAO getDAO() {
+        return new ExpenseDAO();
+    }
+
     // URI: <contextPath>/expenses/getall
     @GET
     @Path("/getall")
     @Produces(MediaType.APPLICATION_JSON)
     public String getall() {
-        ExpenseDAO dao = new ExpenseDAO();
+        ExpenseDAO dao = getDAO();
         List<Expense> expenses = dao.findAll();
         closeDAO(dao);
         return gson.toJson(expenses);
@@ -45,7 +50,7 @@ public class ExpenseWS extends AbstractWS {
     @Produces(MediaType.APPLICATION_JSON)
     public String add(@QueryParam("date") String date, @QueryParam("type") String type, @QueryParam("value") double value, @QueryParam("notes") String notes) throws IOException {
         Expense expense = new Expense(date, type, value, notes);
-        ExpenseDAO dao = new ExpenseDAO();
+        ExpenseDAO dao = getDAO();
         dao.persist(expense);
         closeDAO(dao);
         return gson.toJson(expense);
@@ -56,7 +61,7 @@ public class ExpenseWS extends AbstractWS {
     @Path("/update")
     @Produces(MediaType.APPLICATION_JSON)
     public String update(@QueryParam("id") Long id, @QueryParam("date") String date, @QueryParam("type") String type, @QueryParam("value") double value, @QueryParam("notes") String notes) throws IOException {
-        ExpenseDAO dao = new ExpenseDAO();
+        ExpenseDAO dao = getDAO();
         Expense expense = dao.find(id);
         expense.setDate(date);
         expense.setType(type);
@@ -72,10 +77,11 @@ public class ExpenseWS extends AbstractWS {
     @Path("/delete")
     @Produces(MediaType.TEXT_PLAIN)
     public String delete(@QueryParam("id") Long id) {
-        ExpenseDAO dao = new ExpenseDAO();
+        ExpenseDAO dao = getDAO();
         Expense expense = dao.find(id);
         dao.delete(expense);
         closeDAO(dao);
         return "Expense " + expense.getId() + " deleted.";
     }
+
 }
