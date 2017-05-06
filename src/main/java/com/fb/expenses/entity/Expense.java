@@ -5,7 +5,6 @@
  */
 package com.fb.expenses.entity;
 
-import com.fb.expenses.service.ExpenseTypeDAO;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -58,9 +57,9 @@ public class Expense implements IEntity {
         this.notes = notes;
     }
 
-    public Expense(String date, String type, double value, String notes) throws IOException {
+    public Expense(String date, ExpenseType type, double value, String notes) throws IOException {
         setDate(date);
-        setType(type);
+        this.type = type;
         this.value = value;
         this.notes = notes;
     }
@@ -93,12 +92,6 @@ public class Expense implements IEntity {
 
     public void setType(ExpenseType type) {
         this.type = type;
-    }
-
-    public final void setType(String type) throws IOException {
-        try (ExpenseTypeDAO typeDao = new ExpenseTypeDAO()) {
-            this.type = typeDao.findByCode(type);
-        }
     }
 
     public double getValue() {

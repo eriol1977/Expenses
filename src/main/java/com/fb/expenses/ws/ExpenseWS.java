@@ -6,7 +6,9 @@
 package com.fb.expenses.ws;
 
 import com.fb.expenses.entity.Expense;
+import com.fb.expenses.entity.ExpenseType;
 import com.fb.expenses.service.ExpenseDAO;
+import com.fb.expenses.service.ExpenseTypeDAO;
 import java.io.IOException;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -33,6 +35,10 @@ public class ExpenseWS extends AbstractWS {
         return new ExpenseDAO();
     }
 
+    protected ExpenseTypeDAO getTypeDAO() {
+        return new ExpenseTypeDAO();
+    }
+
     // URI: <contextPath>/expenses/getall
     @GET
     @Path("/getall")
@@ -49,7 +55,8 @@ public class ExpenseWS extends AbstractWS {
     @Path("/add")
     @Produces(MediaType.APPLICATION_JSON)
     public String add(@QueryParam("date") String date, @QueryParam("type") String type, @QueryParam("value") double value, @QueryParam("notes") String notes) throws IOException {
-        Expense expense = new Expense(date, type, value, notes);
+        ExpenseType expType = getTypeDAO().findByCode(type);
+        Expense expense = new Expense(date, expType, value, notes);
         ExpenseDAO dao = getDAO();
         dao.persist(expense);
         closeDAO(dao);
@@ -61,10 +68,11 @@ public class ExpenseWS extends AbstractWS {
     @Path("/update")
     @Produces(MediaType.APPLICATION_JSON)
     public String update(@QueryParam("id") Long id, @QueryParam("date") String date, @QueryParam("type") String type, @QueryParam("value") double value, @QueryParam("notes") String notes) throws IOException {
+        ExpenseType expType = getTypeDAO().findByCode(type);
         ExpenseDAO dao = getDAO();
         Expense expense = dao.find(id);
         expense.setDate(date);
-        expense.setType(type);
+        expense.setType(expType);
         expense.setValue(value);
         expense.setNotes(notes);
         dao.update(expense);
@@ -81,7 +89,7 @@ public class ExpenseWS extends AbstractWS {
         Expense expense = dao.find(id);
         dao.delete(expense);
         closeDAO(dao);
-        return "Expense " + expense.getId() + " deleted.";
+        return "Expense " + id + " deleted.";
     }
 
 }

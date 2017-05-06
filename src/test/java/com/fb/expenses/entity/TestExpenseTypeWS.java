@@ -39,7 +39,7 @@ public class TestExpenseTypeWS {
                 types.add(new ExpenseType("AL", "Alimentari"));
                 types.add(new ExpenseType("IGB", "Igiene/Bellezza"));
                 types.add(new ExpenseType("TRASP", "Trasporti"));
-                return types; //To change body of generated methods, choose Tools | Templates.
+                return types;
             }
 
             @Override
