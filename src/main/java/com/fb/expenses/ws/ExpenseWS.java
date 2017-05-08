@@ -20,10 +20,10 @@ import javax.ws.rs.core.MediaType;
 /**
  * Usage examples:
  *
- * http://localhost:8081/Expenses/expenses/getall
- * http://localhost:8081/Expenses/expenses/add?date=2017-05-20&type=ALI&value=25.99&notes=testing%20expenses
- * http://localhost:8081/Expenses/expenses/update?id=123456&date=2016-08-20&type=IGB&value=2.15&notes=
- * http://localhost:8081/Expenses/expenses/delete?id=123456
+ * http://localhost:8081/Expenses/rest/expenses/getall
+ * http://localhost:8081/Expenses/rest/expenses/add?date=2017-05-20&type=ALI&value=25.99&notes=testing%20expenses
+ * http://localhost:8081/Expenses/rest/expenses/update?id=123456&date=2016-08-20&type=IGB&value=2.15&notes=
+ * http://localhost:8081/Expenses/rest/expenses/delete?id=123456
  *
  * @author f.bertolino
  */

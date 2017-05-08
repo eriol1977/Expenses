@@ -15,7 +15,7 @@ import javax.ws.rs.core.Application;
  *
  * @author f.bertolino
  */
-@ApplicationPath("/")
+@ApplicationPath("/rest")
 public class ExpenseApplication extends Application {
 
     @Override

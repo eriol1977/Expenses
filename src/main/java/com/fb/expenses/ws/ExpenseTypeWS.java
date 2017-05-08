@@ -17,10 +17,10 @@ import javax.ws.rs.core.MediaType;
 /**
  * Usage examples:
  *
- * http://localhost:8081/Expenses/types/getall
- * http://localhost:8081/Expenses/types/add?code=TST&description=Teeeeest
- * http://localhost:8081/Expenses/types/update?code=TST&newCode=NEW&description=Ciaaoooo
- * http://localhost:8081/Expenses/types/delete?code=NEW
+ * http://localhost:8081/Expenses/rest/types/getall
+ * http://localhost:8081/Expenses/rest/types/add?code=TST&description=Teeeeest
+ * http://localhost:8081/Expenses/rest/types/update?code=TST&newCode=NEW&description=Ciaaoooo
+ * http://localhost:8081/Expenses/rest/types/delete?code=NEW
  *
  * @author f.bertolino
  */
