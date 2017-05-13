@@ -5,10 +5,10 @@
     <class>com.fb.expenses.entity.Expense</class>
     <class>com.fb.expenses.entity.ExpenseType</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://172.30.56.71:3306/sampledb"/>
-      <property name="javax.persistence.jdbc.user" value="userFF7"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/expenses"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="mLb33XIuPB7Mm663"/>
+      <property name="javax.persistence.jdbc.password" value=""/>
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
       <property name="dialect" value="org.hibernate.dialect.MySQLDialect"/>
       <property name="hibernate.hbm2ddl.auto" value="update"/>
