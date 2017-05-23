@@ -75,12 +75,16 @@ public abstract class AbstractDAO<T extends IEntity> implements Closeable {
     protected abstract void updateFields(T persisted, T updated);
 
     public void delete(T obj) {
+        delete(obj.getId());
+    }
+
+    public void delete(Long id) {
         em.getTransaction().begin();
-        T persisted = find(obj.getId());
+        T persisted = find(id);
         em.remove(persisted);
         em.getTransaction().commit();
     }
-
+    
     public List<T> findAll() {
         Query query = em.createNamedQuery(this.queryFindAll);
         return query.getResultList();

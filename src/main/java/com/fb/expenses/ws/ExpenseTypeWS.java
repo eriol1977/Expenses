@@ -8,21 +8,18 @@ package com.fb.expenses.ws;
 import com.fb.expenses.entity.ExpenseType;
 import com.fb.expenses.service.ExpenseTypeDAO;
 import java.util.List;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Usage examples:
  *
- * http://localhost:8081/Expenses/rest/types/getall
- * http://localhost:8081/Expenses/rest/types/add?code=TST&description=Teeeeest
- * http://localhost:8081/Expenses/rest/types/update?code=TST&newCode=NEW&description=Ciaaoooo
- * http://localhost:8081/Expenses/rest/types/delete?code=NEW
- *
- * @author f.bertolino
+ * @author Francesco
  */
 @Path("/types")
 public class ExpenseTypeWS extends AbstractWS {
@@ -32,53 +29,49 @@ public class ExpenseTypeWS extends AbstractWS {
         return new ExpenseTypeDAO();
     }
 
-    // URI: <contextPath>/types/getall
     @GET
-    @Path("/getall")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getall() {
+    public List<ExpenseType> getTypes() {
         ExpenseTypeDAO typeDAO = getDAO();
         List<ExpenseType> types = typeDAO.findAll();
         closeDAO(typeDAO);
-        return gson.toJson(types);
+        return types;
     }
 
-    // URI: <contextPath>/types/add
     @GET
-    @Path("/add")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String add(@QueryParam("code") String code, @QueryParam("description") String description) {
-        ExpenseType type = new ExpenseType(code, description);
+    public ExpenseType getTypeById(@PathParam("id") long id) {
+        ExpenseTypeDAO typeDAO = getDAO();
+        final ExpenseType type = typeDAO.find(id);
+        closeDAO(typeDAO);
+        return type;
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public ExpenseType addType(ExpenseType type) {
         ExpenseTypeDAO typeDAO = getDAO();
         typeDAO.persist(type);
         closeDAO(typeDAO);
-        return gson.toJson(type);
+        return type;
     }
 
-    // URI: <contextPath>/types/update
-    @GET
-    @Path("/update")
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
-    public String update(@QueryParam("code") String code, @QueryParam("newCode") String newCode, @QueryParam("description") String description) {
+    public ExpenseType updateType(ExpenseType type) {
         ExpenseTypeDAO typeDAO = getDAO();
-        ExpenseType type = typeDAO.findByCode(code);
-        type.setCode(newCode);
-        type.setDescription(description);
         typeDAO.update(type);
         closeDAO(typeDAO);
-        return gson.toJson(type);
+        return type;
     }
 
-    // URI: <contextPath>/types/delete
-    @GET
-    @Path("/delete")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String delete(@QueryParam("code") String code) {
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void deleteType(@PathParam("id") long id) {
         ExpenseTypeDAO typeDAO = getDAO();
-        ExpenseType type = typeDAO.findByCode(code);
-        typeDAO.delete(type);
+        typeDAO.delete(id);
         closeDAO(typeDAO);
-        return "Expense Type " + type.getCode() + " deleted.";
     }
-
 }
