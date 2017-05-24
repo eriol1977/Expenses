@@ -7,7 +7,6 @@ package com.fb.expenses.ws;
 
 import com.fb.expenses.config.ExpensesContextListener;
 import com.fb.expenses.service.AbstractDAO;
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,10 +17,8 @@ import java.util.logging.Logger;
  */
 public abstract class AbstractWS {
 
-    protected final Gson gson = new Gson();
-    
     protected abstract AbstractDAO getDAO();
-    
+
     protected void closeDAO(AbstractDAO dao) {
         try {
             dao.close();

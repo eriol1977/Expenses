@@ -12,10 +12,9 @@ import org.junit.runners.Suite;
 
 @Suite.SuiteClasses({
     TestExpenseType.class,
-    TestExpense.class,
-    TestExpensesWS.class
+    TestExpense.class
 })
 
 public class TestSuite {
-    
+
 }
