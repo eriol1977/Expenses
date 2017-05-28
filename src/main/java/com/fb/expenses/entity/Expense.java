@@ -5,6 +5,7 @@
  */
 package com.fb.expenses.entity;
 
+import com.fb.expenses.ws.LocalDateAdapter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  *
@@ -73,6 +75,7 @@ public class Expense implements IEntity {
         this.id = id;
     }
 
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDate getDate() {
         return date;
     }
