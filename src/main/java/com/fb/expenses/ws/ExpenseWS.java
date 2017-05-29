@@ -8,6 +8,8 @@ package com.fb.expenses.ws;
 import com.fb.expenses.entity.Expense;
 import com.fb.expenses.service.ExpenseDAO;
 import com.fb.expenses.service.ExpenseTypeDAO;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -38,6 +40,18 @@ public class ExpenseWS extends AbstractWS {
     public List<Expense> getExpenses() {
         ExpenseDAO dao = getDAO();
         List<Expense> expenses = dao.findAll();
+        closeDAO(dao);
+        return expenses;
+    }
+
+    @GET
+    @Path("/bydate/{date}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Expense> getExpensesByDate(@PathParam("date") String date) {
+        ExpenseDAO dao = getDAO();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate dateToFilter = LocalDate.parse(date, formatter);
+        List<Expense> expenses = dao.findExpensesByDate(dateToFilter);
         closeDAO(dao);
         return expenses;
     }

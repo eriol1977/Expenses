@@ -6,6 +6,9 @@
 package com.fb.expenses.service;
 
 import com.fb.expenses.entity.Expense;
+import java.time.LocalDate;
+import java.util.List;
+import javax.persistence.Query;
 
 
 /**
@@ -26,4 +29,9 @@ public class ExpenseDAO extends AbstractDAO<Expense> {
         persisted.setNotes(updated.getNotes());
     }
 
+    public List<Expense> findExpensesByDate(final LocalDate date) {
+        Query query = em.createNamedQuery("FIND_EXPENSES_BY_DATE");
+        query.setParameter("date", date);
+        return query.getResultList();
+    }
 }

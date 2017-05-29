@@ -27,9 +27,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @Table
 
 @NamedQueries({
-    @NamedQuery(query = "Select e from Expense e", name = "FIND_ALL_EXPENSES")
-    ,
-    @NamedQuery(query = "Delete from Expense", name = "DELETE_ALL_EXPENSES")
+    @NamedQuery(query = "Select e from Expense e", name = "FIND_ALL_EXPENSES"),
+    @NamedQuery(query = "Delete from Expense", name = "DELETE_ALL_EXPENSES"),
+    @NamedQuery(query = "Select e from Expense e where e.date = :date", name = "FIND_EXPENSES_BY_DATE")
 })
 
 public class Expense implements IEntity {
